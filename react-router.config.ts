@@ -13,8 +13,15 @@ export default {
   ssr: false,
   async prerender() {
     const client = createClient();
-    const pages = await client.getAllByType("page").catch(() => []);
+    const [pages, caseStudies] = await Promise.all([
+      client.getAllByType("page").catch(() => []),
+      client.getAllByType("case_study").catch(() => []),
+    ]);
 
-    return ["/", ...pages.map((page) => `/${page.uid}`)];
+    return [
+      "/",
+      ...pages.map((page) => `/${page.uid}`),
+      ...caseStudies.map((caseStudy) => `/case-studies/${caseStudy.uid}`),
+    ];
   },
 } satisfies Config;

@@ -1,0 +1,47 @@
+{
+  "id": "case_study_feedback",
+  "type": "SharedSlice",
+  "name": "CaseStudyFeedback",
+  "description": "CaseStudyFeedback",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "Default",
+      "primary": {
+        "label": {
+          "type": "Text",
+          "config": {
+            "label": "Label",
+            "placeholder": "Feedback"
+          }
+        },
+        "quote": {
+          "type": "Text",
+          "config": {
+            "label": "Quote",
+            "placeholder": "A short, impactful quote from the client."
+          }
+        },
+        "name": {
+          "type": "Text",
+          "config": {
+            "label": "Name",
+            "placeholder": "Jane Doe"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "Title, Company"
+          }
+        }
+      },
+      "items": {},
+      "imageUrl": ""
+    }
+  ]
+}

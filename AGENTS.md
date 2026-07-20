@@ -85,6 +85,16 @@ Practical effects:
 - Once you publish a `page` document and rerun `dev`/`build`/`typegen`, the route appears
   automatically and gets prerendered for every published UID. No code change needed.
 
+There's a second, easy-to-miss consequence of `ssr: false`: **even in `npm run dev`, only paths
+listed in `react-router.config.ts`'s `prerender` return real server-rendered content.** Any
+registered-but-unlisted route (including a temporary preview route you add for slice verification)
+returns HTTP 200 with the generic SPA shell and the default `HydrateFallback` placeholder instead
+of its actual content on a plain `curl`/SSR fetch — it only renders once client JS hydrates and
+picks up the route. This looks exactly like "the route silently isn't rendering" and is easy to
+mistake for a bug in the component. If you add a temporary route (per the slice-verification
+workflow below), also temporarily add its path to `prerender`'s return array, and remove both when
+done. A genuinely-unregistered path still 404s normally — only *registered* routes hit this.
+
 ## Adding a slice from Figma
 
 This repo's actual workflow, repeated per section:
@@ -101,8 +111,11 @@ This repo's actual workflow, repeated per section:
 6. Run `npx tsc --noEmit` and `npx eslint <changed paths>`.
 7. Visually verify: this repo has no slice-simulator route set up, so spin up a temporary route
    (e.g. `app/routes/preview-x.tsx`, added to `app/routes.ts`) rendering the component with mock
-   slice data, hit it with `npm run dev` + `curl`, then **delete the temp route and its
-   `routes.ts` entry** before finishing.
+   slice data. Also add its path to `react-router.config.ts`'s `prerender` array — otherwise
+   `npm run dev` + `curl` will show the generic SPA shell instead of real content (see above).
+   Restart `dev` after either edit; route/prerender config is read once at startup, not
+   hot-reloaded. **Delete the temp route, its `routes.ts` entry, and the `prerender` entry** before
+   finishing.
 8. Run `npm run push-models` (or `-- --dry-run` first to preview) when ready to sync the model to
    the real Prismic repo — this repo's `home`/`page`/`settings` documents won't show new content
    until that happens, and it won't appear on the deployed site until the next build+deploy either
