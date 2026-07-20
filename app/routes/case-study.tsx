@@ -27,6 +27,11 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 type LoaderData = Awaited<ReturnType<typeof loader>>;
 
+// Read by app/root.tsx's Layout (via useMatches) to render the global
+// Navigation slice in its transparent, white-on-image variant instead of
+// the default sticky white bar — this page opens with a full-bleed hero.
+export const handle = { transparentNav: true };
+
 export const meta: MetaFunction = (args) => {
   // Cast for the same reason as app/root.tsx: react-router's `SerializeFrom`
   // mangles Prismic's branded slice types rather than preserving them.

@@ -6,6 +6,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useMatches,
   useRouteLoaderData,
 } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -90,6 +91,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
   // from the loader's actual return type instead.
   const data = useRouteLoaderData("root") as RootLoaderData | undefined;
 
+  // A route opts into the transparent/white-on-image nav variant via
+  // `export const handle = { transparentNav: true }` (see
+  // app/routes/case-study.tsx) rather than a prop threaded through the tree.
+  const matches = useMatches();
+  const transparentNav = matches.some(
+    (match) =>
+      (match.handle as { transparentNav?: boolean } | undefined)
+        ?.transparentNav,
+  );
+
   return (
     <html lang="en" className="h-full antialiased">
       <head>
@@ -121,6 +132,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             index={0}
             slices={[data.navigationSlice]}
             context={undefined}
+            transparent={transparentNav}
           />
         )}
         <div className="flex-1">{children}</div>
