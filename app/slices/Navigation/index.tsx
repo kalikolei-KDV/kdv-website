@@ -5,21 +5,36 @@ import type { Content } from "@prismicio/client";
 import type { SliceComponentProps } from "@prismicio/react";
 import { PrismicLink } from "@/prismic-link";
 
-export type NavigationProps = SliceComponentProps<Content.NavigationSlice>;
+export type NavigationProps = SliceComponentProps<Content.NavigationSlice> & {
+  /**
+   * Renders the desktop/tablet nav transparent with white logo/text, floating
+   * over whatever sits at the top of the page (e.g. a hero image), instead of
+   * the default sticky white bar. Mobile is unaffected — it always uses the
+   * standard opaque hamburger nav. Driven by the current route's `handle`
+   * (see app/root.tsx), not a Prismic field.
+   */
+  transparent?: boolean;
+};
 
 /**
  * Component for "Navigation" Slices.
  */
-const Navigation: FC<NavigationProps> = ({ slice }) => {
+const Navigation: FC<NavigationProps> = ({ slice, transparent = false }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <nav
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="sticky top-0 z-50 w-full bg-white px-[15px]"
+      className={`sticky top-0 z-50 w-full bg-white px-[15px] ${
+        transparent ? "md:absolute md:bg-transparent" : ""
+      }`}
     >
-      <div className="flex h-[46px] w-full items-center justify-between border-b border-[color:var(--paragraph-primary,#422307)] py-[10px]">
+      <div
+        className={`flex h-[46px] w-full items-center justify-between border-b border-[color:var(--paragraph-primary,#422307)] py-[10px] ${
+          transparent ? "md:border-white" : ""
+        }`}
+      >
         <PrismicLink
           field={
             isFilled.link(slice.primary.logo_link)
@@ -32,13 +47,28 @@ const Navigation: FC<NavigationProps> = ({ slice }) => {
             src="/images/nav-mark.svg"
             alt=""
             aria-hidden
-            className="h-[20px] w-[11.54px]"
+            className={`h-[20px] w-[11.54px] ${transparent ? "md:hidden" : ""}`}
           />
           <img
             src="/images/nav-wordmark.svg"
             alt="Kingsmen"
-            className="h-[14.4px] w-[94.61px]"
+            className={`h-[14.4px] w-[94.61px] ${transparent ? "md:hidden" : ""}`}
           />
+          {transparent && (
+            <>
+              <img
+                src="/images/nav-mark-white.svg"
+                alt=""
+                aria-hidden
+                className="hidden h-[20px] w-[11.54px] md:block"
+              />
+              <img
+                src="/images/nav-wordmark-white.svg"
+                alt="Kingsmen"
+                className="hidden h-[14.4px] w-[94.61px] md:block"
+              />
+            </>
+          )}
         </PrismicLink>
 
         <ul className="hidden items-center gap-[50px] md:flex">
@@ -46,7 +76,9 @@ const Navigation: FC<NavigationProps> = ({ slice }) => {
             <li key={index}>
               <PrismicLink
                 field={item.link}
-                className="text-[20px] leading-none font-normal tracking-[-1px] text-black"
+                className={`text-[20px] leading-none font-normal tracking-[-1px] text-black ${
+                  transparent ? "md:text-white" : ""
+                }`}
               >
                 {item.label}
               </PrismicLink>

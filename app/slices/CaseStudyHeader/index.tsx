@@ -7,52 +7,13 @@ import { PrismicImage } from "@/prismic-image";
 export type CaseStudyHeaderProps =
   SliceComponentProps<Content.CaseStudyHeaderSlice>;
 
-const NAV_LINKS = [
-  "Work",
-  "Services",
-  "Solutions",
-  "About",
-  "Insights",
-  "Contact",
-];
-
-/**
- * Decorative nav-look overlay matching the Figma hero treatment. It's static
- * (not Prismic-driven) — the real, functional nav is the global Navigation
- * slice rendered above every page in app/root.tsx.
- */
-function DecorativeNavOverlay() {
-  return (
-    <div className="absolute inset-x-0 top-0 hidden h-[46px] items-center justify-between border-b border-white px-[15px] md:flex">
-      <div className="flex items-center gap-[2px]">
-        <img
-          src="/images/nav-mark-white.svg"
-          alt=""
-          aria-hidden
-          className="h-[20px] w-[11.54px]"
-        />
-        <img
-          src="/images/nav-wordmark-white.svg"
-          alt="Kingsmen"
-          className="h-[14.4px] w-[94.61px]"
-        />
-      </div>
-      <ul className="flex items-center gap-[50px]">
-        {NAV_LINKS.map((label) => (
-          <li
-            key={label}
-            className="text-[20px] leading-none font-normal tracking-[-1px] text-white"
-          >
-            {label}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 /**
  * Component for "CaseStudyHeader" Slices.
+ *
+ * The nav overlaid on the hero image on desktop/tablet is the global
+ * Navigation slice rendered in transparent mode (see app/root.tsx and
+ * app/routes/case-study.tsx's `handle`), not baked into this slice — avoids
+ * rendering two navs stacked on top of each other.
  */
 const CaseStudyHeader: FC<CaseStudyHeaderProps> = ({ slice }) => {
   const hasImage = isFilled.image(slice.primary.background_image);
@@ -63,8 +24,8 @@ const CaseStudyHeader: FC<CaseStudyHeaderProps> = ({ slice }) => {
       data-slice-variation={slice.variation}
       className="w-full"
     >
-      {/* Desktop / tablet: image with the title and decorative nav overlaid */}
-      <header className="relative hidden h-[500px] w-full flex-col items-start justify-end overflow-hidden px-[15px] pt-[15px] pb-[8px] md:flex lg:h-[520px]">
+      {/* Desktop / tablet: image with the title overlaid at the bottom */}
+      <header className="relative hidden h-[500px] w-full flex-col items-start justify-end overflow-hidden px-[15px] pb-[8px] md:flex lg:h-[520px]">
         {hasImage && (
           <PrismicImage
             field={slice.primary.background_image}
@@ -72,7 +33,6 @@ const CaseStudyHeader: FC<CaseStudyHeaderProps> = ({ slice }) => {
           />
         )}
         <div aria-hidden className="absolute inset-0 bg-black/10" />
-        <DecorativeNavOverlay />
         <h1 className="relative max-w-[880px] font-heading text-[64px] leading-none font-medium text-white lg:text-[80px]">
           {slice.primary.title}
         </h1>
