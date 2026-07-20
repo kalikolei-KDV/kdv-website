@@ -1,0 +1,56 @@
+{
+  "format": "custom",
+  "id": "settings",
+  "label": "Settings",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "Main": {
+      "favicon": {
+        "config": {
+          "label": "Favicon",
+          "constraint": {},
+          "thumbnails": []
+        },
+        "type": "Image"
+      },
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "navigation": {
+              "type": "SharedSlice"
+            },
+            "footer": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      }
+    },
+    "Tracking Scripts": {
+      "head_scripts": {
+        "config": {
+          "label": "Head scripts",
+          "placeholder": "Pasted verbatim inside <head>. e.g. the Google Tag Manager <script> snippet."
+        },
+        "type": "Text"
+      },
+      "body_start_scripts": {
+        "config": {
+          "label": "Body start scripts",
+          "placeholder": "Pasted verbatim right after the opening <body> tag. e.g. the Google Tag Manager <noscript> snippet."
+        },
+        "type": "Text"
+      },
+      "body_end_scripts": {
+        "config": {
+          "label": "Body end scripts",
+          "placeholder": "Pasted verbatim right before the closing </body> tag."
+        },
+        "type": "Text"
+      }
+    }
+  }
+}

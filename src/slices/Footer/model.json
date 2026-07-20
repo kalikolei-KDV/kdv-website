@@ -1,0 +1,89 @@
+{
+  "id": "footer",
+  "type": "SharedSlice",
+  "name": "Footer",
+  "description": "Footer",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "Default",
+      "primary": {
+        "office_address": {
+          "type": "StructuredText",
+          "config": {
+            "single": "paragraph",
+            "label": "Office address",
+            "placeholder": "9960 Irvine Center Dr\nIrvine, CA 92618"
+          }
+        },
+        "phone_label": {
+          "type": "Text",
+          "config": {
+            "label": "Phone label",
+            "placeholder": "(646) 555-4567"
+          }
+        },
+        "phone_link": {
+          "type": "Link",
+          "config": {
+            "label": "Phone link",
+            "placeholder": "tel:+16465554567"
+          }
+        },
+        "email": {
+          "type": "Text",
+          "config": {
+            "label": "Email",
+            "placeholder": "hello@kingsmendv.com"
+          }
+        },
+        "logo_link": {
+          "type": "Link",
+          "config": {
+            "label": "Logo link",
+            "placeholder": "Where the wordmark should link to"
+          }
+        },
+        "copyright_text": {
+          "type": "Text",
+          "config": {
+            "label": "Copyright text",
+            "placeholder": "2026 © All right reserved"
+          }
+        },
+        "privacy_label": {
+          "type": "Text",
+          "config": {
+            "label": "Privacy policy label",
+            "placeholder": "Privacy Policy"
+          }
+        },
+        "privacy_link": {
+          "type": "Link",
+          "config": {
+            "label": "Privacy policy link"
+          }
+        }
+      },
+      "items": {
+        "label": {
+          "type": "Text",
+          "config": {
+            "label": "Label",
+            "placeholder": "LinkedIn"
+          }
+        },
+        "link": {
+          "type": "Link",
+          "config": {
+            "label": "Link"
+          }
+        }
+      },
+      "imageUrl": ""
+    }
+  ]
+}

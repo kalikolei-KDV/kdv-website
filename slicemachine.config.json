@@ -1,0 +1,7 @@
+{
+  "_latest": "0.4.0",
+  "repositoryName": "kingsmendv",
+  "adapter": "@slicemachine/adapter-next",
+  "localSliceSimulatorURL": "http://localhost:3000/slice-simulator",
+  "libraries": ["./src/slices"]
+}
