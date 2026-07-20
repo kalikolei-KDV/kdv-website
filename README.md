@@ -24,8 +24,9 @@ things changed along the way:
   and redeploy.
 - **No local Slice Machine UI.** Slice Machine only ships adapters for Next.js, Nuxt, and
   SvelteKit — there's no React Router adapter. Content models still live as plain JSON
-  (`customtypes/*/index.json`, `app/slices/*/model.json`) and are pushed to Prismic through their
-  web UI or API instead of the visual builder.
+  (`customtypes/*/index.json`, `app/slices/*/model.json`); `npm run push-models` (a thin wrapper
+  around Prismic's official Custom Types API client) replaces Slice Machine's "Push changes"
+  button.
 - **`app/prismicio-types.d.ts` is regenerated, not hand-written.** Run `npm run codegen`
   (`prismic-ts-codegen`) after changing a model — see `prismicCodegen.config.ts`.
 
@@ -52,10 +53,17 @@ step) — never shipped to the browser.
 
 ## 3. Push the content model to Prismic
 
-There's no local Slice Machine UI for this stack. Create the custom types and slices in the
-Prismic writing room directly (Custom Types → New → paste/match the JSON in `customtypes/`), or
-use Prismic's [migration API](https://prismic.io/docs/migration-api-technical-reference) to script
-it from the JSON files already in this repo.
+There's no local Slice Machine UI for this stack, but the same "push changes" step exists as a
+script:
+
+```bash
+npm run push-models -- --dry-run   # preview what would be pushed, no network calls
+npm run push-models                # actually push (inserts new models, updates existing ones)
+```
+
+This reads every `customtypes/*/index.json` and `app/slices/*/model.json` and syncs it to your
+repo using `PRISMIC_WRITE_TOKEN` from `.env.local` (see `scripts/push-models.mjs`). Run it any time
+you add or change a slice/custom type — same as clicking "Push changes" used to do.
 
 ## 4. Add content in Prismic
 
@@ -79,7 +87,8 @@ This is where the Figma MCP workflow plugs in:
 4. Define its fields in `app/slices/<YourSlice>/model.json` (same shape as `Hero`'s).
 5. Register it in `app/slices/index.ts` and add it to the relevant custom type's `choices` in
    `/customtypes`.
-6. Run `npm run codegen` to regenerate `app/prismicio-types.d.ts`.
+6. Run `npm run codegen` to regenerate `app/prismicio-types.d.ts`, then `npm run push-models` to
+   sync the new/changed models to Prismic.
 
 Repeat per component — this becomes your repeatable design → content → code loop.
 

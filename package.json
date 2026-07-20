@@ -9,6 +9,7 @@
     "preview": "vite preview --outDir build/client",
     "lint": "eslint",
     "codegen": "prismic-ts-codegen",
+    "push-models": "node scripts/push-models.mjs",
     "typecheck": "react-router typegen && tsc"
   },
   "engines": {
@@ -18,15 +19,16 @@
     "@prismicio/client": "^7.21.8",
     "@prismicio/react": "^3.4.1",
     "@tanstack/react-query": "^5.101.3",
+    "isbot": "^5",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "react-router": "^8.2.0",
-    "isbot": "^5"
+    "react-router": "^8.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@fontsource/ibm-plex-mono": "^5.3.0",
     "@fontsource/instrument-sans": "^5.3.0",
+    "@prismicio/custom-types-client": "^2.1.0",
     "@react-router/dev": "^8.2.0",
     "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^22",
