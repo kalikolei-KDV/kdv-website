@@ -24,8 +24,10 @@ history, they're leftovers to clean up, not intentional.
   `@fontsource/*`, imported in `app/app.css`.
 - Content models are plain JSON (`customtypes/*/index.json`, `app/slices/*/model.json`) — there is
   **no Slice Machine adapter for React Router** (only Next.js/Nuxt/SvelteKit exist), so there's no
-  local visual builder or `npm run slicemachine`. Push models to Prismic via their web UI or
-  migration API instead.
+  local visual builder or `npm run slicemachine`. `npm run push-models` (`scripts/push-models.mjs`,
+  built on the official `@prismicio/custom-types-client`) replaces the "Push changes" button —
+  insert-or-update per model file, slices before custom types (custom types reference slices by
+  id). `-- --dry-run` previews without a network call or a write token.
 - `app/prismicio-types.d.ts` is **generated**, not hand-written — run `npm run codegen`
   (`prismic-ts-codegen`, configured in `prismicCodegen.config.ts`) after any model change. Don't
   hand-edit it.
@@ -101,9 +103,10 @@ This repo's actual workflow, repeated per section:
    (e.g. `app/routes/preview-x.tsx`, added to `app/routes.ts`) rendering the component with mock
    slice data, hit it with `npm run dev` + `curl`, then **delete the temp route and its
    `routes.ts` entry** before finishing.
-8. Push the model to the real Prismic repo (writing room UI or migration API) when ready — this
-   repo's `home`/`page`/`settings` documents won't show new content until that happens, and it
-   won't appear on the deployed site until the next build+deploy either (fully static, no ISR).
+8. Run `npm run push-models` (or `-- --dry-run` first to preview) when ready to sync the model to
+   the real Prismic repo — this repo's `home`/`page`/`settings` documents won't show new content
+   until that happens, and it won't appear on the deployed site until the next build+deploy either
+   (fully static, no ISR).
 
 ### Styling conventions
 
