@@ -11,7 +11,29 @@
       },
       "slices": {
         "config": {
-          "choices": {}
+          "choices": {
+            "case_study_header": {
+              "type": "SharedSlice"
+            },
+            "case_study_meta": {
+              "type": "SharedSlice"
+            },
+            "two_column_copy": {
+              "type": "SharedSlice"
+            },
+            "case_study_gallery": {
+              "type": "SharedSlice"
+            },
+            "titled_paragraph": {
+              "type": "SharedSlice"
+            },
+            "case_study_results": {
+              "type": "SharedSlice"
+            },
+            "case_study_feedback": {
+              "type": "SharedSlice"
+            }
+          }
         },
         "fieldset": "Slice Zone",
         "type": "Slices"

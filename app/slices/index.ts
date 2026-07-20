@@ -7,6 +7,13 @@ import StatsSection from "./StatsSection";
 import ConnectWithUs from "./ConnectWithUs";
 import Navigation from "./Navigation";
 import Footer from "./Footer";
+import CaseStudyHeader from "./CaseStudyHeader";
+import CaseStudyMeta from "./CaseStudyMeta";
+import TwoColumnCopy from "./TwoColumnCopy";
+import CaseStudyGallery from "./CaseStudyGallery";
+import TitledParagraph from "./TitledParagraph";
+import CaseStudyResults from "./CaseStudyResults";
+import CaseStudyFeedback from "./CaseStudyFeedback";
 
 export const components = {
   hero: Hero,
@@ -18,4 +25,11 @@ export const components = {
   connect_with_us: ConnectWithUs,
   navigation: Navigation,
   footer: Footer,
+  case_study_header: CaseStudyHeader,
+  case_study_meta: CaseStudyMeta,
+  two_column_copy: TwoColumnCopy,
+  case_study_gallery: CaseStudyGallery,
+  titled_paragraph: TitledParagraph,
+  case_study_results: CaseStudyResults,
+  case_study_feedback: CaseStudyFeedback,
 };

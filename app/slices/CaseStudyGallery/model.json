@@ -1,0 +1,27 @@
+{
+  "id": "case_study_gallery",
+  "type": "SharedSlice",
+  "name": "CaseStudyGallery",
+  "description": "CaseStudyGallery",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "Default",
+      "primary": {},
+      "items": {
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        }
+      },
+      "imageUrl": ""
+    }
+  ]
+}
