@@ -1,15 +1,33 @@
-# Figma → Prismic → Next.js Starter
+# Figma → Prismic → React Router Starter
 
-A minimal, working starting point for the pipeline: **Figma components → code → Prismic-driven content → deploy.**
+A minimal, working starting point for the pipeline: **Figma components → code → Prismic-driven content → static deploy.**
 
 ## What's in here
 
-- **Next.js 16** (App Router, TypeScript, Tailwind v4)
-- **Prismic** wired up via `@prismicio/client`, `@prismicio/next`, `@prismicio/react`
-- **Slice Machine** configured (`slicemachine.config.json`) with one example slice: `Hero`
-- Two custom types: `home` (singleton) and `page` (repeatable, uses `/[uid]`)
-- Preview + exit-preview API routes for Prismic's live preview
+- **React Router 8** in framework mode (Vite, TypeScript, Tailwind v4), built with `ssr: false` +
+  `prerender` — output is fully static HTML, no runtime server required
+- **Prismic** wired up via `@prismicio/client`, `@prismicio/react`; internal links resolve through
+  React Router's `Link` (see `app/prismic-link.tsx`)
+- **TanStack Query** available (`QueryClientProvider` in `app/root.tsx`) for any future client-side
+  data needs — not required for the current all-static content
+- Two custom types: `home` (singleton) and `page` (repeatable)
+- A `settings` singleton holding global chrome (`Navigation`/`Footer` slices), a CMS-managed
+  favicon, and raw head/body script injection (e.g. Google Tag Manager)
 - A homepage that renders gracefully with a placeholder screen until you connect a real Prismic repo
+
+## What's different from the Next.js version
+
+This started as a Next.js + Slice Machine site and was migrated to React Router + Vite. A few
+things changed along the way:
+
+- **No live preview.** Prismic content is fetched at build time only. To see new content, rebuild
+  and redeploy.
+- **No local Slice Machine UI.** Slice Machine only ships adapters for Next.js, Nuxt, and
+  SvelteKit — there's no React Router adapter. Content models still live as plain JSON
+  (`customtypes/*/index.json`, `app/slices/*/model.json`) and are pushed to Prismic through their
+  web UI or API instead of the visual builder.
+- **`app/prismicio-types.d.ts` is regenerated, not hand-written.** Run `npm run codegen`
+  (`prismic-ts-codegen`) after changing a model — see `prismicCodegen.config.ts`.
 
 ## 1. Create your Prismic repository
 
@@ -22,21 +40,22 @@ In `slicemachine.config.json`, replace:
 ```json
 "repositoryName": "your-prismic-repo-name"
 ```
-with your actual repo name.
+with your actual repo name (this file is just read for that default; it has no other purpose here).
 
 Then copy the env file and do the same there:
 ```bash
 cp .env.local.example .env.local
 ```
-Edit `.env.local` and set `NEXT_PUBLIC_PRISMIC_ENVIRONMENT` to your repo name.
+Edit `.env.local` and set `PRISMIC_ENVIRONMENT` to your repo name, plus `PRISMIC_ACCESS_TOKEN` if
+your repo requires one. These are only ever read at build time (`react-router build`'s prerender
+step) — never shipped to the browser.
 
 ## 3. Push the content model to Prismic
 
-```bash
-npm install
-npm run slicemachine
-```
-This opens the Slice Machine UI (usually at `localhost:9999`). Click **Push changes** to sync the `Hero` slice and the `home`/`page` custom types to your actual Prismic repo. This is a one-time step per model change.
+There's no local Slice Machine UI for this stack. Create the custom types and slices in the
+Prismic writing room directly (Custom Types → New → paste/match the JSON in `customtypes/`), or
+use Prismic's [migration API](https://prismic.io/docs/migration-api-technical-reference) to script
+it from the JSON files already in this repo.
 
 ## 4. Add content in Prismic
 
@@ -45,26 +64,35 @@ In the Prismic writing room:
 2. Add a `Hero` slice to it, fill in heading/subheading/CTA/image.
 3. Publish it.
 
-Run `npm run dev` and you should see it rendered at `localhost:3000`.
+Run `npm run dev` and you should see it rendered at `localhost:3000` (or whatever port Vite picks).
 
 ## 5. Wire in your Figma-derived components
 
 This is where the Figma MCP workflow plugs in:
 
 1. In Figma, select one component in Dev Mode.
-2. Ask your AI coding agent (Claude Code, Cursor, etc., connected via the Figma MCP server) to generate the component.
-3. Drop the generated markup into a new slice under `src/slices/<YourSlice>/index.tsx`, matching the pattern in `src/slices/Hero`.
-4. Define its fields in `src/slices/<YourSlice>/model.json` (same shape as `Hero`'s).
-5. Register it in `src/slices/index.ts` and add it to the relevant custom type's `choices` in `/customtypes`.
-6. Run `npm run slicemachine` again to push the new slice model.
+2. Ask your AI coding agent (Claude Code, Cursor, etc., connected via the Figma MCP server) to
+   generate the component.
+3. Drop the generated markup into a new slice under `app/slices/<YourSlice>/index.tsx`, matching
+   the pattern in `app/slices/Hero` — use `app/prismic-link.tsx`/`app/prismic-image.tsx` in place
+   of `@prismicio/next`'s Next-specific components.
+4. Define its fields in `app/slices/<YourSlice>/model.json` (same shape as `Hero`'s).
+5. Register it in `app/slices/index.ts` and add it to the relevant custom type's `choices` in
+   `/customtypes`.
+6. Run `npm run codegen` to regenerate `app/prismicio-types.d.ts`.
 
 Repeat per component — this becomes your repeatable design → content → code loop.
 
 ## 6. Deploy
 
-Push this repo to GitHub, then import it into [Vercel](https://vercel.com) or [Netlify](https://netlify.com). Set the same `NEXT_PUBLIC_PRISMIC_ENVIRONMENT` env var in your hosting provider's dashboard. Every push triggers a new deploy; every Prismic publish is picked up on next request (ISR/ on-demand revalidation is already configured in `src/prismicio.ts`).
+`npm run build` produces a fully static site in `build/client/` — deploy it to any static host
+(Vercel, Netlify, Cloudflare Pages, S3+CloudFront, GitHub Pages, etc.). There's no server to run.
+Every Prismic publish requires a rebuild + redeploy to show up (trigger that via a webhook to your
+host's deploy hook, or CI on a schedule).
 
 ## Notes
 
-- `src/prismicio-types.d.ts` is currently a **hand-written stub** matching the model above. Once you run Slice Machine against your real repo, it's regenerated automatically to match your actual content model — don't hand-edit it long-term.
-- The homepage font is the system font stack by default (no external font fetch at build time). Swap in `next/font/google` or a self-hosted font whenever you're ready.
+- `app/prismicio-types.d.ts` is **generated** — run `npm run codegen` after any content-model
+  change, don't hand-edit it.
+- Fonts (Instrument Sans, IBM Plex Mono) are self-hosted via `@fontsource/*`, imported in
+  `app/app.css` — no external font requests at runtime.
