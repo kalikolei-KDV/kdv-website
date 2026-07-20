@@ -64,6 +64,25 @@ assuming a `nvm use`/`volta pin` actually took effect.
   (e.g. GTM's `<noscript><iframe>` snippet) and are inserted via `dangerouslySetInnerHTML`. This
   split exists because `<head>` can't hold arbitrary non-metadata children the way `<body>` can.
 
+## The `:uid` page route is conditionally registered
+
+`app/routes.ts` fetches `getAllByType("page")` at build/dev-start time and only registers
+`route(":uid", "routes/page.tsx")` when at least one `page` document exists. This isn't optional
+niceness — in `ssr: false` mode, any route with a `loader` **must** be covered by at least one
+prerendered path (there's no server left to run it otherwise), and `react-router build` hard-fails
+if that's violated. Since Prismic `page` documents are the only source of valid `:uid` values and
+there may legitimately be zero of them, the route can't unconditionally exist with a `loader`.
+
+Practical effects:
+- With zero `page` documents (true today), the route doesn't exist at all — visiting any
+  non-`/` path just 404s, and `app/routes/page.tsx` isn't part of the app. This is expected, not
+  broken.
+- `app/routes/page.tsx` is typed against plain `react-router` types (`LoaderFunctionArgs`,
+  `MetaFunction`), not the generated `./+types/page` module — that module only exists when the
+  route is registered, so depending on it would make `tsc` fail whenever there are zero pages.
+- Once you publish a `page` document and rerun `dev`/`build`/`typegen`, the route appears
+  automatically and gets prerendered for every published UID. No code change needed.
+
 ## Adding a slice from Figma
 
 This repo's actual workflow, repeated per section:
