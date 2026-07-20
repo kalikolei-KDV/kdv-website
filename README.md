@@ -1,103 +1,112 @@
-# Figma → Prismic → React Router Starter
+# Kingsmen Digital Ventures — website
 
-A minimal, working starting point for the pipeline: **Figma components → code → Prismic-driven content → static deploy.**
+Marketing site built by translating a Figma file section-by-section into Prismic-driven content:
+**Figma components → code → Prismic content → static deploy.**
 
 ## What's in here
 
 - **React Router 8** in framework mode (Vite, TypeScript, Tailwind v4), built with `ssr: false` +
   `prerender` — output is fully static HTML, no runtime server required
 - **Prismic** wired up via `@prismicio/client`, `@prismicio/react`; internal links resolve through
-  React Router's `Link` (see `app/prismic-link.tsx`)
+  React Router's `Link` (see `app/prismic-link.tsx`, `app/prismic-image.tsx`)
 - **TanStack Query** available (`QueryClientProvider` in `app/root.tsx`) for any future client-side
-  data needs — not required for the current all-static content
-- Two custom types: `home` (singleton) and `page` (repeatable)
+  data needs — not required by the current all-static content
+- Three page-producing custom types: `home` (singleton), `page` (repeatable, generic pages), and
+  `case_study` (repeatable, the case-study template)
 - A `settings` singleton holding global chrome (`Navigation`/`Footer` slices), a CMS-managed
   favicon, and raw head/body script injection (e.g. Google Tag Manager)
+- 16 slices under `app/slices/` — homepage sections (`Hero`, `ThreeCards`, `DeliveryTitleCta`,
+  `OurServices`, `Industries`, `StatsSection`, `ConnectWithUs`), global chrome (`Navigation`,
+  `Footer`), and the case-study template (`CaseStudyHeader`, `CaseStudyMeta`, `TwoColumnCopy`,
+  `CaseStudyGallery`, `TitledParagraph`, `CaseStudyResults`, `CaseStudyFeedback`)
 - A homepage that renders gracefully with a placeholder screen until you connect a real Prismic repo
 
-## What's different from the Next.js version
+## Content architecture
 
-This started as a Next.js + Slice Machine site and was migrated to React Router + Vite. A few
-things changed along the way:
+- `/` renders the `home` singleton's slice zone.
+- `/:uid` renders a `page` document — but **only exists once at least one `page` document is
+  published**. In `ssr: false` mode, a route with a `loader` must be covered by a prerendered path
+  or the build fails, so `app/routes.ts` checks Prismic at startup and only registers the route
+  when there's something for it to serve. Same for `/case-studies/:uid` and `case_study`
+  documents. No code change needed once you publish one — just restart `dev` or rebuild.
+- Global chrome (`Navigation`, `Footer`, favicon, tracking scripts) lives in the `settings`
+  singleton and is fetched once in `app/root.tsx`'s root loader, not through any page's slice zone.
+- The case-study template's nav is the *same* `Navigation` slice as everywhere else, just
+  reskinned transparent/white-on-image at `md+` — controlled by the route itself via
+  `export const handle = { transparentNav: true }`, read in `app/root.tsx` with `useMatches()`. Not
+  a second nav baked into the header slice (that produced a visible duplicate — see AGENTS.md).
 
-- **No live preview.** Prismic content is fetched at build time only. To see new content, rebuild
-  and redeploy.
-- **No local Slice Machine UI.** Slice Machine only ships adapters for Next.js, Nuxt, and
-  SvelteKit — there's no React Router adapter. Content models still live as plain JSON
-  (`customtypes/*/index.json`, `app/slices/*/model.json`); `npm run push-models` (a thin wrapper
-  around Prismic's official Custom Types API client) replaces Slice Machine's "Push changes"
-  button.
-- **`app/prismicio-types.d.ts` is regenerated, not hand-written.** Run `npm run codegen`
-  (`prismic-ts-codegen`) after changing a model — see `prismicCodegen.config.ts`.
+## Setup
 
-## 1. Create your Prismic repository
+### 1. Point this project at your Prismic repository
 
-1. Go to [prismic.io](https://prismic.io) and create a new repository (any name).
-2. Copy that repo name.
+In `slicemachine.config.json`, set `repositoryName` to your repo's name (this file is only read
+for that default; it has no other purpose here). Then:
 
-## 2. Point this project at it
-
-In `slicemachine.config.json`, replace:
-```json
-"repositoryName": "your-prismic-repo-name"
-```
-with your actual repo name (this file is just read for that default; it has no other purpose here).
-
-Then copy the env file and do the same there:
 ```bash
 cp .env.local.example .env.local
 ```
-Edit `.env.local` and set `PRISMIC_ENVIRONMENT` to your repo name, plus `PRISMIC_ACCESS_TOKEN` if
-your repo requires one. These are only ever read at build time (`react-router build`'s prerender
-step) — never shipped to the browser.
 
-## 3. Push the content model to Prismic
+Edit `.env.local`: `PRISMIC_ENVIRONMENT` (your repo name) and `PRISMIC_ACCESS_TOKEN` if your repo
+requires one for read access. Both are only ever read at build/dev-start time (Node), never
+shipped to the browser.
 
-There's no local Slice Machine UI for this stack, but the same "push changes" step exists as a
-script:
+### 2. Install and run
 
 ```bash
-npm run push-models -- --dry-run   # preview what would be pushed, no network calls
+npm install   # requires Node >=22.22.0 — see the "Node version" note below
+npm run dev
+```
+
+### 3. Push the content model
+
+There's no local Slice Machine UI for this stack (no React Router adapter exists), but the same
+"push changes" step exists as a script, built on Prismic's official Custom Types API client:
+
+```bash
+npm run push-models -- --dry-run   # preview what would be pushed, no network call
 npm run push-models                # actually push (inserts new models, updates existing ones)
 ```
 
-This reads every `customtypes/*/index.json` and `app/slices/*/model.json` and syncs it to your
-repo using `PRISMIC_WRITE_TOKEN` from `.env.local` (see `scripts/push-models.mjs`). Run it any time
-you add or change a slice/custom type — same as clicking "Push changes" used to do.
+Reads every `customtypes/*/index.json` and `app/slices/*/model.json` and syncs it to your repo
+using `PRISMIC_WRITE_TOKEN`. Run it any time you add or change a slice/custom type.
 
-## 4. Add content in Prismic
+### 4. Add content in Prismic
 
-In the Prismic writing room:
-1. Create a `Home` document (it's a singleton — only one exists).
-2. Add a `Hero` slice to it, fill in heading/subheading/CTA/image.
-3. Publish it.
+Create and publish a `Home` document (singleton), add slices to it, then `npm run dev` and visit
+`localhost:3000` (or whatever port Vite picks). For a `page` or `case_study` document: publish it,
+then restart `dev` (route registration happens once at startup — see Content architecture above).
 
-Run `npm run dev` and you should see it rendered at `localhost:3000` (or whatever port Vite picks).
+## Wire in a new slice from Figma
 
-## 5. Wire in your Figma-derived components
+1. Pull `get_design_context` (Figma MCP) for the relevant node(s) — check every breakpoint that
+   has structural differences, not just size differences.
+2. Build the slice under `app/slices/<Name>/index.tsx`, matching an existing slice's shape
+   (`FC<SliceComponentProps<...>>`, this repo's `PrismicLink`/`PrismicImage` for links/images,
+   `PrismicRichText` for rich text fields).
+3. Write `app/slices/<Name>/model.json`.
+4. Run `npm run codegen` to regenerate `app/prismicio-types.d.ts`.
+5. Register it in `app/slices/index.ts` and add it as a choice in the relevant
+   `customtypes/*/index.json`.
+6. `npx tsc --noEmit` / `npx eslint <changed paths>`.
+7. Visually verify: add a temporary route rendering it with mock data, **and add that route's path
+   to `react-router.config.ts`'s `prerender` array** — otherwise `npm run dev` serves the generic
+   SPA shell instead of real content for it (an `ssr: false` quirk, see AGENTS.md). Delete both
+   the temp route and the `prerender` entry when done.
+8. `npm run push-models` to sync the new model to Prismic.
 
-This is where the Figma MCP workflow plugs in:
-
-1. In Figma, select one component in Dev Mode.
-2. Ask your AI coding agent (Claude Code, Cursor, etc., connected via the Figma MCP server) to
-   generate the component.
-3. Drop the generated markup into a new slice under `app/slices/<YourSlice>/index.tsx`, matching
-   the pattern in `app/slices/Hero` — use `app/prismic-link.tsx`/`app/prismic-image.tsx` in place
-   of `@prismicio/next`'s Next-specific components.
-4. Define its fields in `app/slices/<YourSlice>/model.json` (same shape as `Hero`'s).
-5. Register it in `app/slices/index.ts` and add it to the relevant custom type's `choices` in
-   `/customtypes`.
-6. Run `npm run codegen` to regenerate `app/prismicio-types.d.ts`, then `npm run push-models` to
-   sync the new/changed models to Prismic.
-
-Repeat per component — this becomes your repeatable design → content → code loop.
-
-## 6. Deploy
+## Deploy
 
 `npm run build` produces a fully static site in `build/client/` — deploy it to any static host
 (Vercel, Netlify, Cloudflare Pages, S3+CloudFront, GitHub Pages, etc.). There's no server to run.
 Every Prismic publish requires a rebuild + redeploy to show up (trigger that via a webhook to your
-host's deploy hook, or CI on a schedule).
+host's deploy hook, or CI on a schedule) — there's no live preview or ISR in this architecture.
+
+## Node version
+
+Pinned via Volta (`package.json`) and `.nvmrc` to a version satisfying `react-router`'s own
+minimum (currently 22.22.0+). This isn't cosmetic: running the CLI on an older Node doesn't just
+warn, it corrupts `node_modules` — see AGENTS.md before troubleshooting install issues.
 
 ## Notes
 
@@ -105,3 +114,5 @@ host's deploy hook, or CI on a schedule).
   change, don't hand-edit it.
 - Fonts (Instrument Sans, IBM Plex Mono) are self-hosted via `@fontsource/*`, imported in
   `app/app.css` — no external font requests at runtime.
+- See `AGENTS.md` for the deeper conventions/gotchas list (styling patterns, TypeScript quirks
+  specific to this stack, process hygiene when spinning up temp dev servers).
