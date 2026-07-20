@@ -1,0 +1,54 @@
+{
+  "format": "custom",
+  "id": "home",
+  "label": "Home",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "Main": {
+      "meta_title": {
+        "config": {
+          "label": "Meta Title",
+          "placeholder": "Title used for search engines"
+        },
+        "type": "Text"
+      },
+      "meta_description": {
+        "config": {
+          "label": "Meta Description",
+          "placeholder": "Description used for search engines"
+        },
+        "type": "Text"
+      },
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "hero": {
+              "type": "SharedSlice"
+            },
+            "three_cards": {
+              "type": "SharedSlice"
+            },
+            "delivery_title_cta": {
+              "type": "SharedSlice"
+            },
+            "our_services": {
+              "type": "SharedSlice"
+            },
+            "industries": {
+              "type": "SharedSlice"
+            },
+            "stats_section": {
+              "type": "SharedSlice"
+            },
+            "connect_with_us": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "navigation",
+  "type": "SharedSlice",
+  "name": "Navigation",
+  "description": "Navigation",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "Default",
+      "primary": {
+        "logo_link": {
+          "type": "Link",
+          "config": {
+            "label": "Logo link",
+            "placeholder": "/"
+          }
+        }
+      },
+      "items": {
+        "label": {
+          "type": "Text",
+          "config": {
+            "label": "Label",
+            "placeholder": "Work"
+          }
+        },
+        "link": {
+          "type": "Link",
+          "config": {
+            "label": "Link"
+          }
+        }
+      },
+      "imageUrl": ""
+    }
+  ]
+}

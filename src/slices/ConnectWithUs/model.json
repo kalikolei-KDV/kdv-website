@@ -1,0 +1,33 @@
+{
+  "id": "connect_with_us",
+  "type": "SharedSlice",
+  "name": "ConnectWithUs",
+  "description": "ConnectWithUs",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "Default",
+      "primary": {
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "Title",
+            "placeholder": "Connect with us to explore your project's potential."
+          }
+        },
+        "link": {
+          "type": "Link",
+          "config": {
+            "label": "Link",
+            "placeholder": "Where this banner should link to (optional)"
+          }
+        }
+      },
+      "items": {},
+      "imageUrl": ""
+    }
+  ]
+}

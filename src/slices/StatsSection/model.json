@@ -1,0 +1,98 @@
+{
+  "id": "stats_section",
+  "type": "SharedSlice",
+  "name": "StatsSection",
+  "description": "StatsSection",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "Default",
+      "primary": {
+        "intro": {
+          "type": "Text",
+          "config": {
+            "label": "Intro",
+            "placeholder": "Frame & Form craft visual strategies that elevate your brand."
+          }
+        },
+        "stat_1_value": {
+          "type": "Text",
+          "config": {
+            "label": "Stat 1 value",
+            "placeholder": "1M+"
+          }
+        },
+        "stat_1_label": {
+          "type": "Text",
+          "config": {
+            "label": "Stat 1 label",
+            "placeholder": "Users and visitors interacted with our websites"
+          }
+        },
+        "stat_2_value": {
+          "type": "Text",
+          "config": {
+            "label": "Stat 2 value",
+            "placeholder": "36"
+          }
+        },
+        "stat_2_label": {
+          "type": "Text",
+          "config": {
+            "label": "Stat 2 label",
+            "placeholder": "Active campaigns for multiple companies and brands"
+          }
+        },
+        "stat_3_value": {
+          "type": "Text",
+          "config": {
+            "label": "Stat 3 value",
+            "placeholder": "100+"
+          }
+        },
+        "stat_3_label": {
+          "type": "Text",
+          "config": {
+            "label": "Stat 3 label",
+            "placeholder": "Different clients have sought our expertise"
+          }
+        },
+        "cta_label": {
+          "type": "Text",
+          "config": {
+            "label": "CTA label",
+            "placeholder": "About Us"
+          }
+        },
+        "cta_link": {
+          "type": "Link",
+          "config": {
+            "label": "CTA link",
+            "placeholder": "Where the link should go"
+          }
+        }
+      },
+      "items": {
+        "badge_image": {
+          "type": "Image",
+          "config": {
+            "label": "Badge image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "badge_label": {
+          "type": "Text",
+          "config": {
+            "label": "Badge label",
+            "placeholder": "Clutch — Top Design Company"
+          }
+        }
+      },
+      "imageUrl": ""
+    }
+  ]
+}

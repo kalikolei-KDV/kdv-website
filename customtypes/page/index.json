@@ -1,0 +1,61 @@
+{
+  "format": "custom",
+  "id": "page",
+  "label": "Page",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "uid": {
+        "config": {
+          "label": "UID",
+          "placeholder": "unique-page-slug"
+        },
+        "type": "UID"
+      },
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "hero": {
+              "type": "SharedSlice"
+            },
+            "three_cards": {
+              "type": "SharedSlice"
+            },
+            "delivery_title_cta": {
+              "type": "SharedSlice"
+            },
+            "our_services": {
+              "type": "SharedSlice"
+            },
+            "industries": {
+              "type": "SharedSlice"
+            },
+            "stats_section": {
+              "type": "SharedSlice"
+            },
+            "connect_with_us": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      },
+      "meta_title": {
+        "config": {
+          "label": "Meta Title",
+          "placeholder": "Title used for search engines"
+        },
+        "type": "Text"
+      },
+      "meta_description": {
+        "config": {
+          "label": "Meta Description",
+          "placeholder": "Description used for search engines"
+        },
+        "type": "Text"
+      }
+    }
+  }
+}
