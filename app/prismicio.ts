@@ -1,5 +1,5 @@
 import * as prismic from "@prismicio/client";
-import sm from "../slicemachine.config.json";
+import sm from "../slicemachine.config.json" with { type: "json" };
 
 /**
  * The project's Prismic repository name.
