@@ -17,12 +17,13 @@ jobs:
           cache: "npm"
 
       # The Node version above is pinned (.nvmrc), but the npm version bundled
-      # with a given Node build isn't — GitHub's runner shipped an npm old
-      # enough to reject a lockfile written by the locally Volta-pinned npm
-      # version (invalid/missing picomatch entries on `npm ci`, despite the
-      # same lockfile installing cleanly locally). Install the exact npm
-      # version pinned in package.json's `volta.npm` field so CI always
-      # matches local dev, instead of hardcoding the version here too.
+      # with a given Node build isn't — install the exact npm version pinned
+      # in package.json's `volta.npm` field for toolchain parity with local
+      # dev, instead of hardcoding the version here too. (Not the fix for the
+      # picomatch/ERESOLVE `npm ci` failure this repo hit — that one was npm's
+      # resolver non-deterministically hoisting fdir's optional peer dep on
+      # picomatch differently on macOS vs. Linux; see git history for the
+      # regenerated-on-Linux lockfile fix. Worth keeping anyway.)
       - run: npm install -g npm@$(node -p "require('./package.json').volta.npm")
 
       - run: npm ci

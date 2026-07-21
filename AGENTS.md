@@ -254,6 +254,29 @@ mismatches, see the gotcha above); dev-dependency bumps are grouped into a singl
 noise. `ci.yml` runs against every Dependabot PR the same as any other, so a bad bump still gets
 caught before merge.
 
+### `npm ci` can fail in CI (Linux) while passing locally (macOS) on the exact same lockfile
+
+Hit this once already: `npm ci` failed in CI with `ERESOLVE`/`Invalid: lock file's picomatch@2.3.2
+does not satisfy picomatch@4.0.5`, while the identical `package-lock.json` installed and
+`npm ci`-validated cleanly on macOS, repeatedly, even with a fully cold npm cache. Root cause:
+`fdir` has an _optional_ peer dependency on `picomatch`, and npm's resolver non-deterministically
+chose to hoist `fdir` to the root `node_modules` on macOS (where the hoisted `picomatch` was 2.3.2,
+too old for `fdir`'s peer range) but nest it under `tinyglobby` on Linux (where `tinyglobby`'s own
+nested `picomatch` was 4.0.5, satisfying it) — a legitimate difference in how npm's resolver
+hoists an ambiguous optional-peer case per platform, not a real code problem.
+
+If `npm ci` ever fails in CI while the same lockfile passes locally, don't assume the local result
+proves the lockfile is fine — regenerate it from an actual Linux environment and diff:
+
+```bash
+docker run --rm --platform linux/amd64 -v "$(pwd):/repo" -w /repo node:22.22.0 \
+  bash -c "npm install -g npm@11.10.0 && rm -rf node_modules package-lock.json && npm install"
+```
+
+then verify the result still installs cleanly on macOS too (`rm -rf node_modules && npm ci`) before
+committing it — lockfiles are meant to be cross-platform-installable regardless of which OS wrote
+them, and in practice that held here once the Linux-side resolution was captured.
+
 ## TypeScript gotchas specific to this stack
 
 - `tsconfig.json` has `verbatimModuleSyntax: true` — type-only imports (`FC`, `Content`,
