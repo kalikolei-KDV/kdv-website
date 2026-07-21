@@ -43,7 +43,7 @@ crashing. If you ever see a run print `removed N packages` or `adding 'isbot' to
 unprompted, stop, check `node --version` against the CLI's real requirement, and reinstall clean
 rather than re-running the same command.
 
-If a machine has multiple version managers installed (Volta, nvm, etc.), the *first* one on `PATH`
+If a machine has multiple version managers installed (Volta, nvm, etc.), the _first_ one on `PATH`
 wins regardless of what any of the others think is active — `which -a node` to check before
 assuming a `nvm use`/`volta pin` actually took effect.
 
@@ -76,6 +76,7 @@ if that's violated. Since Prismic `page` documents are the only source of valid 
 there may legitimately be zero of them, the route can't unconditionally exist with a `loader`.
 
 Practical effects:
+
 - With zero `page` documents (true today), the route doesn't exist at all — visiting any
   non-`/` path just 404s, and `app/routes/page.tsx` isn't part of the app. This is expected, not
   broken.
@@ -93,7 +94,7 @@ of its actual content on a plain `curl`/SSR fetch — it only renders once clien
 picks up the route. This looks exactly like "the route silently isn't rendering" and is easy to
 mistake for a bug in the component. If you add a temporary route (per the slice-verification
 workflow below), also temporarily add its path to `prerender`'s return array, and remove both when
-done. A genuinely-unregistered path still 404s normally — only *registered* routes hit this.
+done. A genuinely-unregistered path still 404s normally — only _registered_ routes hit this.
 
 ## Adding a slice from Figma
 
@@ -116,7 +117,13 @@ This repo's actual workflow, repeated per section:
    Restart `dev` after either edit; route/prerender config is read once at startup, not
    hot-reloaded. **Delete the temp route, its `routes.ts` entry, and the `prerender` entry** before
    finishing.
-8. Run `npm run push-models` (or `-- --dry-run` first to preview) when ready to sync the model to
+8. Write `app/slices/<Name>/index.test.tsx` (see Testing below) — `mockSlice` generates a fake
+   slice value straight from the `model.json` you just wrote, so the test scaffolding costs
+   nothing extra to point at a new slice. Cover, at minimum: the component renders without
+   throwing, and any conditional-rendering branch it has (an optional field that changes output
+   when filled vs. empty, a variant prop, grouped/discriminator-field logic like `OurServices`).
+   Run `npm run test`.
+9. Run `npm run push-models` (or `-- --dry-run` first to preview) when ready to sync the model to
    the real Prismic repo — this repo's `home`/`page`/`settings` documents won't show new content
    until that happens, and it won't appear on the deployed site until the next build+deploy either
    (fully static, no ISR).
@@ -137,6 +144,79 @@ This repo's actual workflow, repeated per section:
   and badge rows that would otherwise wrap awkwardly at narrow widths (`ThreeCards`,
   `StatsSection`'s awards row).
 
+## Testing
+
+Vitest + React Testing Library, config in `vitest.config.ts` (deliberately separate from
+`vite.config.ts` — the `@react-router/dev/vite` plugin does route-manifest/SSR work Vitest doesn't
+need and isn't set up to satisfy; plain `@vitejs/plugin-react` is enough for component tests).
+
+- `npm run test` (single run) / `npm run test:watch` (watch mode).
+- Tests are colocated: `app/slices/<Name>/index.test.tsx` next to the component.
+- Import `render`/`screen`/etc. from `@/test/render`, not `@testing-library/react` directly —
+  slice components render `PrismicLink` (`@/prismic-link`), which forwards to React Router's
+  `Link` and needs a Router context even when nothing navigates; `@/test/render` wraps RTL's
+  `render` in a `MemoryRouter` for you and re-exports the rest of `@testing-library/react`.
+- Use `mockSlice` from `@/test/mock-slice` (built on `@prismicio/mock`, seeded so output is stable
+  across runs) to generate a fully-populated fake slice value straight from a slice's own
+  `model.json` — no live Prismic content needed. `model.json` is imported as a plain JSON module,
+  which widens its string-literal fields (`"type": "SharedSlice"`, etc.) to `string`, so the
+  pattern at the call site is:
+
+  ```ts
+  const slice = mockSlice<Content.HeroSlice>(
+    heroModelJson as unknown as SharedSliceModel,
+  );
+  ```
+
+  i.e. cast the JSON import to `SharedSliceModel`, and pass the generated `Content.*Slice` type as
+  `mockSlice`'s type argument — the same "cast at the boundary" approach used elsewhere in this
+  codebase for Prismic's branded union types (see TypeScript gotchas below).
+
+- Use `text()` from `@/test/mock-slice` when passing a Key Text field to an RTL matcher
+  (`getByText(text(slice.primary.title))`, etc.). `prismic-ts-codegen` types every Key Text field
+  as the generic `KeyTextField` (`string | null`) regardless of whether it's actually optional, but
+  RTL's string-only matchers reject `null` — `text()` narrows it and throws if a mocked field is
+  ever unexpectedly empty, rather than silently coercing to `""` and passing a meaningless match.
+- `app/test/setup.ts` manually calls `cleanup()` in an `afterEach` — RTL's own auto-cleanup hooks
+  the _global_ `afterEach`, which never exists here since `vitest.config.ts` doesn't set
+  `test.globals` (this repo imports `describe`/`it`/`expect` explicitly). Without it, every
+  `render()` in a file piles onto the previous test's DOM instead of replacing it — if a test
+  reports being some multiple of the count you expect, check this before the component.
+- `app/test/**` and `**/*.test.{ts,tsx}` are exempted from the `react-refresh/only-export-components`
+  eslint rule (`eslint.config.mjs`) — they never run through the Vite dev server's React Refresh
+  pipeline, so patterns like RTL's documented `export * from "@testing-library/react"` custom-render
+  helper don't apply.
+
+## Formatting
+
+Prettier, config in `.prettierrc.json` — `npm run format` (writes) / `npm run format:check` (CI
+uses this one). `app/prismicio-types.d.ts` is excluded (`.prettierignore`) since it's regenerated
+by `npm run codegen` anyway; reformatting a generated file is pointless busywork.
+
+## SEO: sitemap.xml & robots.txt
+
+- `public/robots.txt` is a static file (just an `Allow: /` + `Sitemap:` pointer) — no reason to
+  generate it, it never changes based on content.
+- `public/sitemap.xml` **is** generated — `scripts/generate-sitemap.mjs`, chained in front of
+  `react-router build` via the `build` npm script (`node scripts/generate-sitemap.mjs &&
+react-router build`), reading the same `page`/`case_study` documents
+  `react-router.config.ts`'s `prerender()` uses so the sitemap can't drift from what's actually
+  prerendered. It's gitignored — it's a build artifact that changes with CMS content, not code, so
+  there's nothing worth committing.
+- The production domain used for absolute URLs comes from `SITE_URL` (`.env.local`), defaulting to
+  `https://kingsmendv.com` if unset.
+- Not wired into `npm run dev` — sitemap.xml has no dev-time consumer, only production crawlers.
+
+## Continuous Integration
+
+`.github/workflows/ci.yml` runs on every push to `main` and every PR: `format:check`, `lint`,
+`typecheck`, `test`, then `build` (in that order — cheapest checks fail fast first). The `build`
+step runs without `PRISMIC_ACCESS_TOKEN`/`PRISMIC_ENVIRONMENT` secrets configured, it still
+succeeds — Prismic fetches in `react-router.config.ts`/`app/routes.ts` fall back to empty results
+on failure (see above), so an unconfigured build just prerenders zero `page`/`case_study` routes
+instead of failing. Add repo secrets with the same names as `.env.local.example` for a CI build
+that actually reflects real content.
+
 ## TypeScript gotchas specific to this stack
 
 - `tsconfig.json` has `verbatimModuleSyntax: true` — type-only imports (`FC`, `Content`,
@@ -146,7 +226,7 @@ This repo's actual workflow, repeated per section:
   them — don't drop React Router's `Link` in directly as `internalComponent`.
 - React Router's `useRouteLoaderData<typeof loader>()` / `SerializeFrom` type utility does not
   reliably preserve Prismic's branded discriminated-union slice types (`NavigationSlice |
-  FooterSlice` collapses instead of narrowing per-field). `app/root.tsx` works around this with an
+FooterSlice` collapses instead of narrowing per-field). `app/root.tsx` works around this with an
   explicit `Awaited<ReturnType<typeof loader>>` type alias and a manual cast rather than relying on
   the generic. If you hit a similar "type X is not assignable to type Y" error where X and Y are
   both members of the same slice union, this is almost certainly the same issue — don't spend time
