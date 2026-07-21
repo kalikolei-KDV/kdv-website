@@ -22,7 +22,7 @@ const CaseStudyHeader: FC<CaseStudyHeaderProps> = ({ slice }) => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="w-full"
+      className="w-full bg-white"
     >
       {/* Desktop / tablet: image with the title overlaid at the bottom */}
       <header className="relative hidden h-[500px] w-full flex-col items-start justify-end overflow-hidden px-[15px] pb-[8px] md:flex lg:h-[520px]">
