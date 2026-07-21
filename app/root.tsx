@@ -10,7 +10,7 @@ import {
   useRouteLoaderData,
 } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { isFilled, type Content } from "@prismicio/client";
+import { asText, isFilled, type Content } from "@prismicio/client";
 
 import type { Route } from "./+types/root";
 import { createClient } from "./prismicio";
@@ -47,12 +47,10 @@ export async function loader() {
 
   const navigationSlice =
     (slices.find((slice) => slice.slice_type === "navigation") as
-      | Content.NavigationSlice
-      | undefined) ?? null;
+      Content.NavigationSlice | undefined) ?? null;
   const footerSlice =
     (slices.find((slice) => slice.slice_type === "footer") as
-      | Content.FooterSlice
-      | undefined) ?? null;
+      Content.FooterSlice | undefined) ?? null;
 
   const faviconField = settings?.data.favicon;
   const favicon = isFilled.image(faviconField)
@@ -71,14 +69,14 @@ export async function loader() {
     navigationSlice,
     footerSlice,
     favicon,
-    headScript: isFilled.keyText(settings?.data.head_scripts)
-      ? extractInlineScript(settings.data.head_scripts)
+    headScript: isFilled.richText(settings?.data.head_scripts)
+      ? extractInlineScript(asText(settings.data.head_scripts, "\n"))
       : null,
-    bodyStartHtml: isFilled.keyText(settings?.data.body_start_scripts)
-      ? settings.data.body_start_scripts
+    bodyStartHtml: isFilled.richText(settings?.data.body_start_scripts)
+      ? asText(settings.data.body_start_scripts, "\n")
       : null,
-    bodyEndHtml: isFilled.keyText(settings?.data.body_end_scripts)
-      ? settings.data.body_end_scripts
+    bodyEndHtml: isFilled.richText(settings?.data.body_end_scripts)
+      ? asText(settings.data.body_end_scripts, "\n")
       : null,
   };
 }

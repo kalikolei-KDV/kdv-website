@@ -33,23 +33,26 @@
       "head_scripts": {
         "config": {
           "label": "Head scripts",
-          "placeholder": "Inline JS, run inside <head>. Paste the exact Google Tag Manager <script> snippet — the wrapping <script> tags are stripped automatically."
+          "placeholder": "Inline JS, run inside <head>. Paste the exact Google Tag Manager <script> snippet — the wrapping <script> tags are stripped automatically.",
+          "multi": "paragraph"
         },
-        "type": "Text"
+        "type": "StructuredText"
       },
       "body_start_scripts": {
         "config": {
           "label": "Body start scripts",
-          "placeholder": "Pasted verbatim right after the opening <body> tag. e.g. the Google Tag Manager <noscript> snippet."
+          "placeholder": "Pasted verbatim right after the opening <body> tag. e.g. the Google Tag Manager <noscript> snippet.",
+          "multi": "paragraph"
         },
-        "type": "Text"
+        "type": "StructuredText"
       },
       "body_end_scripts": {
         "config": {
           "label": "Body end scripts",
-          "placeholder": "Pasted verbatim right before the closing </body> tag."
+          "placeholder": "Pasted verbatim right before the closing </body> tag.",
+          "multi": "paragraph"
         },
-        "type": "Text"
+        "type": "StructuredText"
       }
     }
   }
