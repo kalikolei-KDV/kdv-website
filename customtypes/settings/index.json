@@ -33,7 +33,7 @@
       "head_scripts": {
         "config": {
           "label": "Head scripts",
-          "placeholder": "Pasted verbatim inside <head>. e.g. the Google Tag Manager <script> snippet."
+          "placeholder": "Inline JS, run inside <head>. Paste the exact Google Tag Manager <script> snippet — the wrapping <script> tags are stripped automatically."
         },
         "type": "Text"
       },

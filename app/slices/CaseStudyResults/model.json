@@ -1,0 +1,40 @@
+{
+  "id": "case_study_results",
+  "type": "SharedSlice",
+  "name": "CaseStudyResults",
+  "description": "CaseStudyResults",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "Default",
+      "primary": {},
+      "items": {
+        "value": {
+          "type": "Text",
+          "config": {
+            "label": "Value",
+            "placeholder": "100%"
+          }
+        },
+        "name": {
+          "type": "Text",
+          "config": {
+            "label": "Name",
+            "placeholder": "Increase in conversions"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "A short description of this metric"
+          }
+        }
+      },
+      "imageUrl": ""
+    }
+  ]
+}

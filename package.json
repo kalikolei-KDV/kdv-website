@@ -1,36 +1,52 @@
 {
-  "name": "figma-prismic-starter",
+  "name": "kdv-website",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "react-router dev",
+    "build": "react-router build",
+    "preview": "vite preview --outDir build/client",
     "lint": "eslint",
-    "slicemachine": "sh -c 'if [ -x \"$HOME/.nvm/versions/node/v20.19.0/bin/node\" ]; then \"$HOME/.nvm/versions/node/v20.19.0/bin/node\" ./node_modules/start-slicemachine/bin/start-slicemachine.js; else start-slicemachine; fi'"
+    "codegen": "prismic-ts-codegen",
+    "push-models": "node scripts/push-models.mjs",
+    "typecheck": "react-router typegen && tsc"
   },
   "engines": {
-    "node": ">=20.19.0 <21",
-    "npm": ">=10"
+    "node": ">=22.22.0"
   },
   "dependencies": {
     "@prismicio/client": "^7.21.8",
-    "@prismicio/next": "^2.3.0",
     "@prismicio/react": "^3.4.1",
-    "next": "^15.5.20",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "@tanstack/react-query": "^5.101.3",
+    "isbot": "^5",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router": "^8.2.0"
   },
   "devDependencies": {
-    "@slicemachine/adapter-next": "^0.3.97",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@eslint/js": "^10.0.1",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/instrument-sans": "^5.3.0",
+    "@prismicio/custom-types-client": "^2.1.0",
+    "@react-router/dev": "^8.2.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.10",
-    "slice-machine-ui": "^2.21.4",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "dotenv": "^17.4.2",
+    "eslint": "^10.7.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "globals": "^17.7.0",
+    "prismic-ts-codegen": "^0.1.30",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5",
+    "typescript-eslint": "^8.65.0",
+    "vite": "^8.1.5"
+  },
+  "volta": {
+    "node": "22.22.0",
+    "npm": "11.10.0"
   }
 }

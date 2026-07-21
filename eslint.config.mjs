@@ -1,18 +1,54 @@
 import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals";
-import nextTs from "eslint-config-next/typescript";
+import js from "@eslint/js";
+import tseslint from "typescript-eslint";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
+import globals from "globals";
 
 const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
-  // Override default ignores of eslint-config-next.
   globalIgnores([
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
     "build/**",
-    "next-env.d.ts",
+    ".react-router/**",
+    ".next/**",
+    "public/**",
+    "node_modules/**",
   ]),
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  reactHooks.configs.flat["recommended-latest"],
+  reactRefresh.configs.vite,
+  {
+    languageOptions: {
+      globals: { ...globals.browser, ...globals.node },
+    },
+  },
+  {
+    // React Router route modules intentionally co-locate loaders/meta/etc.
+    // with the default component export.
+    files: ["app/root.tsx", "app/routes/**/*.tsx"],
+    rules: {
+      "react-refresh/only-export-components": [
+        "warn",
+        {
+          allowConstantExport: true,
+          allowExportNames: [
+            "meta",
+            "links",
+            "headers",
+            "loader",
+            "action",
+            "clientLoader",
+            "clientAction",
+            "shouldRevalidate",
+            "handle",
+            "ErrorBoundary",
+            "HydrateFallback",
+            "Layout",
+          ],
+        },
+      ],
+    },
+  },
 ]);
 
 export default eslintConfig;
