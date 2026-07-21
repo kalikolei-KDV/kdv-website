@@ -20,6 +20,11 @@
   "engines": {
     "node": ">=22.22.0"
   },
+  "overrides": {
+    "eslint-plugin-jsx-a11y": {
+      "eslint": "$eslint"
+    }
+  },
   "dependencies": {
     "@prismicio/client": "^7.21.8",
     "@prismicio/react": "^3.4.1",
