@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { isFilled } from "@prismicio/client";
 import type { Content } from "@prismicio/client";
+import { PrismicRichText } from "@prismicio/react";
 import type { SliceComponentProps } from "@prismicio/react";
 import { PrismicLink } from "@/prismic-link";
 import { PrismicImage } from "@/prismic-image";
@@ -9,15 +10,43 @@ export type ThreeCardsProps = SliceComponentProps<Content.ThreeCardsSlice>;
 
 /**
  * Component for "ThreeCards" Slices.
+ *
+ * `label`/`content` are optional — filling them in renders a "Relevant
+ * cases"-style label + rich text header directly above the card grid (same
+ * layout as the TitledParagraph slice), matching the Figma composition where
+ * that header sits flush against the cards with no gap. Leave them empty for
+ * a plain card grid, as on the homepage.
  */
 const ThreeCards: FC<ThreeCardsProps> = ({ slice }) => {
+  const hasHeader = isFilled.keyText(slice.primary.label);
+
   return (
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="w-full bg-white px-[15px] py-[15px]"
+      className="w-full bg-white px-[15px]"
     >
-      <div className="flex items-start gap-[15px] overflow-x-auto md:overflow-visible">
+      {hasHeader && (
+        <div className="grid w-full grid-cols-1 gap-[15px] border-t border-black pt-[15px] md:grid-cols-3">
+          <p className="font-heading text-[24px] leading-none font-normal tracking-[-1.2px] text-black md:sticky md:top-0">
+            {slice.primary.label}
+          </p>
+          <div className="font-body max-w-[720px] text-[18px] leading-[1.5] not-italic tracking-[-0.9px] text-[color:var(--paragraph-primary,#422307)] md:col-span-2">
+            <PrismicRichText
+              field={slice.primary.content}
+              components={{
+                paragraph: ({ children }) => <p>{children}</p>,
+              }}
+            />
+          </div>
+        </div>
+      )}
+
+      <div
+        className={`flex items-start gap-[15px] overflow-x-auto md:overflow-visible ${
+          hasHeader ? "pb-[15px]" : "py-[15px]"
+        }`}
+      >
         {slice.items.map((item, index) => (
           <div
             key={index}

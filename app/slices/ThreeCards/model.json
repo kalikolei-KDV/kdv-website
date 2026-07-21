@@ -10,7 +10,23 @@
       "docURL": "...",
       "version": "sktwi1xtmkfgx8626",
       "description": "Default",
-      "primary": {},
+      "primary": {
+        "label": {
+          "type": "Text",
+          "config": {
+            "label": "Label (optional)",
+            "placeholder": "Relevant cases"
+          }
+        },
+        "content": {
+          "type": "StructuredText",
+          "config": {
+            "single": "paragraph",
+            "label": "Content (optional)",
+            "placeholder": "Paragraph or two of intro copy shown above the cards"
+          }
+        }
+      },
       "items": {
         "image": {
           "type": "Image",

@@ -1224,6 +1224,31 @@ type StatsSectionSliceVariation = StatsSectionSliceDefault
 export type StatsSectionSlice = prismic.SharedSlice<"stats_section", StatsSectionSliceVariation>;
 
 /**
+ * Primary content in *ThreeCards → Default → Primary*
+ */
+export interface ThreeCardsSliceDefaultPrimary {
+	/**
+	 * Label (optional) field in *ThreeCards → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Relevant cases
+	 * - **API ID Path**: three_cards.default.primary.label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	label: prismic.KeyTextField;
+	
+	/**
+	 * Content (optional) field in *ThreeCards → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Paragraph or two of intro copy shown above the cards
+	 * - **API ID Path**: three_cards.default.primary.content
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	content: prismic.RichTextField;
+}
+
+/**
  * Primary content in *ThreeCards → Items*
  */
 export interface ThreeCardsSliceDefaultItem {
@@ -1285,7 +1310,7 @@ export interface ThreeCardsSliceDefaultItem {
  * - **Description**: Default
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type ThreeCardsSliceDefault = prismic.SharedSliceVariation<"default", Record<string, never>, Simplify<ThreeCardsSliceDefaultItem>>;
+export type ThreeCardsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<ThreeCardsSliceDefaultPrimary>, Simplify<ThreeCardsSliceDefaultItem>>;
 
 /**
  * Slice variation for *ThreeCards*
@@ -1483,6 +1508,7 @@ declare module "@prismicio/client" {
 			StatsSectionSliceVariation,
 			StatsSectionSliceDefault,
 			ThreeCardsSlice,
+			ThreeCardsSliceDefaultPrimary,
 			ThreeCardsSliceDefaultItem,
 			ThreeCardsSliceVariation,
 			ThreeCardsSliceDefault,
