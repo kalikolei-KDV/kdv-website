@@ -27,7 +27,13 @@ history, they're leftovers to clean up, not intentional.
   local visual builder or `npm run slicemachine`. `npm run push-models` (`scripts/push-models.mjs`,
   built on the official `@prismicio/custom-types-client`) replaces the "Push changes" button —
   insert-or-update per model file, slices before custom types (custom types reference slices by
-  id). `-- --dry-run` previews without a network call or a write token.
+  id). `-- --dry-run` previews without a network call or a write token. Without `--dry-run`, it
+  checks each model against the live repo first (so it can label each one insert vs. update
+  up front, not just discover it via a `ConflictError` mid-push), prints the full plan, and
+  requires typing `yes` before writing anything — this mutates the live Prismic repo's content
+  model, which isn't trivially reversible if a field gets renamed/removed out from under existing
+  documents, so it gets a real confirmation gate rather than running blind. `-- --yes` skips the
+  prompt for non-interactive use.
 - `app/prismicio-types.d.ts` is **generated**, not hand-written — run `npm run codegen`
   (`prismic-ts-codegen`, configured in `prismicCodegen.config.ts`) after any model change. Don't
   hand-edit it.
