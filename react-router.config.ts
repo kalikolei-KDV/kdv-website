@@ -20,6 +20,7 @@ export default {
 
     return [
       "/",
+      "/work",
       ...pages.map((page) => `/${page.uid}`),
       ...caseStudies.map((caseStudy) => `/case-studies/${caseStudy.uid}`),
     ];

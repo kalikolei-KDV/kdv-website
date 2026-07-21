@@ -9,6 +9,20 @@
           "label": "UID"
         }
       },
+      "client": {
+        "type": "Text",
+        "config": {
+          "label": "Client",
+          "placeholder": "e.g. Evolus — shown as the small label on the /work listing card"
+        }
+      },
+      "title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": "Short display title — shown on the /work listing card. Separate from the case_study_header slice's own title so the listing page doesn't need to read into slice data."
+        }
+      },
       "slices": {
         "config": {
           "choices": {

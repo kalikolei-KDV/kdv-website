@@ -19,6 +19,11 @@ const [pages, caseStudies] = await Promise.all([
 
 export default [
   index("routes/home.tsx"),
+  // Unconditional, same as the index route — /work is a singleton (like
+  // home), not per-document, so it always has somewhere to prerender to
+  // even before a `work` document is published (see routes/work.tsx's
+  // fallback title).
+  route("work", "routes/work.tsx"),
   ...(pages.length > 0 ? [route(":uid", "routes/page.tsx")] : []),
   ...(caseStudies.length > 0
     ? [route("case-studies/:uid", "routes/case-study.tsx")]
