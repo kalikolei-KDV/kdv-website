@@ -303,20 +303,22 @@ interface SettingsDocumentData {
  */
 export type SettingsDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<SettingsDocumentData>, "settings", Lang>;
 
+type WorkDocumentDataSlicesSlice = PageHeadingSlice | CaseStudiesListSlice
+
 /**
  * Content for Work documents
  */
 interface WorkDocumentData {
 	/**
-	 * Title field in *Work*
+	 * Slice Zone field in *Work*
 	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Our work
-	 * - **API ID Path**: work.title
+	 * - **Field Type**: Slice Zone
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: work.slices[]
 	 * - **Tab**: Main
-	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 * - **Documentation**: https://prismic.io/docs/slices
 	 */
-	title: prismic.KeyTextField;/**
+	slices: prismic.SliceZone<WorkDocumentDataSlicesSlice>;/**
 	 * Meta Title field in *Work*
 	 *
 	 * - **Field Type**: Text
@@ -362,6 +364,29 @@ interface WorkDocumentData {
 export type WorkDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<WorkDocumentData>, "work", Lang>;
 
 export type AllDocumentTypes = CaseStudyDocument | HomeDocument | PageDocument | SettingsDocument | WorkDocument;
+
+/**
+ * Default variation for CaseStudiesList Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type CaseStudiesListSliceDefault = prismic.SharedSliceVariation<"default", Record<string, never>, never>;
+
+/**
+ * Slice variation for *CaseStudiesList*
+ */
+type CaseStudiesListSliceVariation = CaseStudiesListSliceDefault
+
+/**
+ * CaseStudiesList Shared Slice
+ *
+ * - **API ID**: `case_studies_list`
+ * - **Description**: CaseStudiesList
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type CaseStudiesListSlice = prismic.SharedSlice<"case_studies_list", CaseStudiesListSliceVariation>;
 
 /**
  * Primary content in *CaseStudyFeedback → Default → Primary*
@@ -1161,6 +1186,44 @@ type OurServicesSliceVariation = OurServicesSliceDefault
 export type OurServicesSlice = prismic.SharedSlice<"our_services", OurServicesSliceVariation>;
 
 /**
+ * Primary content in *PageHeading → Default → Primary*
+ */
+export interface PageHeadingSliceDefaultPrimary {
+	/**
+	 * Title field in *PageHeading → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Our work
+	 * - **API ID Path**: page_heading.default.primary.title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	title: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for PageHeading Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PageHeadingSliceDefault = prismic.SharedSliceVariation<"default", Simplify<PageHeadingSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *PageHeading*
+ */
+type PageHeadingSliceVariation = PageHeadingSliceDefault
+
+/**
+ * PageHeading Shared Slice
+ *
+ * - **API ID**: `page_heading`
+ * - **Description**: PageHeading
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PageHeadingSlice = prismic.SharedSlice<"page_heading", PageHeadingSliceVariation>;
+
+/**
  * Primary content in *StatsSection → Default → Primary*
  */
 export interface StatsSectionSliceDefaultPrimary {
@@ -1531,7 +1594,11 @@ declare module "@prismicio/client" {
 			SettingsDocumentDataSlicesSlice,
 			WorkDocument,
 			WorkDocumentData,
+			WorkDocumentDataSlicesSlice,
 			AllDocumentTypes,
+			CaseStudiesListSlice,
+			CaseStudiesListSliceVariation,
+			CaseStudiesListSliceDefault,
 			CaseStudyFeedbackSlice,
 			CaseStudyFeedbackSliceDefaultPrimary,
 			CaseStudyFeedbackSliceVariation,
@@ -1584,6 +1651,10 @@ declare module "@prismicio/client" {
 			OurServicesSliceDefaultItem,
 			OurServicesSliceVariation,
 			OurServicesSliceDefault,
+			PageHeadingSlice,
+			PageHeadingSliceDefaultPrimary,
+			PageHeadingSliceVariation,
+			PageHeadingSliceDefault,
 			StatsSectionSlice,
 			StatsSectionSliceDefaultPrimary,
 			StatsSectionSliceDefaultItem,

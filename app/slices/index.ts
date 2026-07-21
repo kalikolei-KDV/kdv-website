@@ -14,6 +14,8 @@ import CaseStudyGallery from "./CaseStudyGallery";
 import TitledParagraph from "./TitledParagraph";
 import CaseStudyResults from "./CaseStudyResults";
 import CaseStudyFeedback from "./CaseStudyFeedback";
+import PageHeading from "./PageHeading";
+import CaseStudiesList from "./CaseStudiesList";
 
 export const components = {
   hero: Hero,
@@ -32,4 +34,6 @@ export const components = {
   titled_paragraph: TitledParagraph,
   case_study_results: CaseStudyResults,
   case_study_feedback: CaseStudyFeedback,
+  page_heading: PageHeading,
+  case_studies_list: CaseStudiesList,
 };

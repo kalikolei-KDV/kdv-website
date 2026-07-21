@@ -6,11 +6,18 @@
   "status": true,
   "json": {
     "Main": {
-      "title": {
-        "type": "Text",
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
         "config": {
-          "label": "Title",
-          "placeholder": "Our work"
+          "choices": {
+            "page_heading": {
+              "type": "SharedSlice"
+            },
+            "case_studies_list": {
+              "type": "SharedSlice"
+            }
+          }
         }
       }
     },

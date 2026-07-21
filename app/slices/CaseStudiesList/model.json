@@ -1,0 +1,18 @@
+{
+  "id": "case_studies_list",
+  "type": "SharedSlice",
+  "name": "CaseStudiesList",
+  "description": "CaseStudiesList",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "Default",
+      "primary": {},
+      "items": {},
+      "imageUrl": ""
+    }
+  ]
+}
