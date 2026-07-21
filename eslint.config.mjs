@@ -49,6 +49,15 @@ const eslintConfig = defineConfig([
       ],
     },
   },
+  {
+    // Test files/helpers run through Vitest, never the Vite dev server's
+    // React Refresh pipeline, so the "only export components" constraint
+    // doesn't apply.
+    files: ["app/test/**", "**/*.test.{ts,tsx}"],
+    rules: {
+      "react-refresh/only-export-components": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;
