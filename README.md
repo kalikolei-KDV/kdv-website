@@ -31,7 +31,7 @@ Marketing site built by translating a Figma file section-by-section into Prismic
   documents. No code change needed once you publish one — just restart `dev` or rebuild.
 - Global chrome (`Navigation`, `Footer`, favicon, tracking scripts) lives in the `settings`
   singleton and is fetched once in `app/root.tsx`'s root loader, not through any page's slice zone.
-- The case-study template's nav is the *same* `Navigation` slice as everywhere else, just
+- The case-study template's nav is the _same_ `Navigation` slice as everywhere else, just
   reskinned transparent/white-on-image at `md+` — controlled by the route itself via
   `export const handle = { transparentNav: true }`, read in `app/root.tsx` with `useMatches()`. Not
   a second nav baked into the header slice (that produced a visible duplicate — see AGENTS.md).
@@ -93,7 +93,9 @@ then restart `dev` (route registration happens once at startup — see Content a
    to `react-router.config.ts`'s `prerender` array** — otherwise `npm run dev` serves the generic
    SPA shell instead of real content for it (an `ssr: false` quirk, see AGENTS.md). Delete both
    the temp route and the `prerender` entry when done.
-8. `npm run push-models` to sync the new model to Prismic.
+8. Write `app/slices/<Name>/index.test.tsx` using `mockSlice`/`@/test/render` (see AGENTS.md's
+   Testing section) and run `npm run test`.
+9. `npm run push-models` to sync the new model to Prismic.
 
 ## Deploy
 
