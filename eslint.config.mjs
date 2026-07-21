@@ -10,7 +10,6 @@ const eslintConfig = defineConfig([
   globalIgnores([
     "build/**",
     ".react-router/**",
-    ".next/**",
     "public/**",
     "node_modules/**",
   ]),
