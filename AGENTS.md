@@ -193,6 +193,12 @@ Prettier, config in `.prettierrc.json` — `npm run format` (writes) / `npm run 
 uses this one). `app/prismicio-types.d.ts` is excluded (`.prettierignore`) since it's regenerated
 by `npm run codegen` anyway; reformatting a generated file is pointless busywork.
 
+`eslint-plugin-jsx-a11y`'s `flatConfigs.recommended` is wired into `eslint.config.mjs` alongside
+the rest — flagging things like missing `alt` text or non-interactive elements with click handlers
+but no keyboard equivalent. Worth keeping given this codebase is translated pixel-for-pixel from
+Figma, where visual fidelity is the explicit goal and semantic/accessibility structure is easy to
+lose track of as a result.
+
 ## SEO: sitemap.xml & robots.txt
 
 - `public/robots.txt` is a static file (just an `Allow: /` + `Sitemap:` pointer) — no reason to
