@@ -121,6 +121,17 @@ near-duplicate slice is a recurring mistake worth actively avoiding:
   `"default"` variation), but it's the right tool once field-based composition stops fitting.
 - Only reach for a **genuinely new slice** when none of the above holds.
 
+**Confirm before adding a field** — to an existing custom type/slice, or as part of a new one.
+Get an explicit yes/no before writing it to `customtypes/*/index.json` or `app/slices/*/model.json`,
+don't just add it and describe the change afterward. Field additions have real downstream cost
+here: existing published documents don't retroactively get the new field filled in (someone has to
+go do that by hand — see the `client`/`title`/`listing_image` fields added to `case_study` for
+`/work`, still blank on the existing `evolus` document as of this writing), and every addition is a
+real write to the live Prismic repo via `npm run push-models`. Removing or renaming a field is at
+least as impactful and gets the same check. A quick "add a `listing_image` field to `case_study` for
+this — sound good?" is enough; this doesn't need the full weight of a multi-option question unless
+there's a genuine design fork to resolve.
+
 Once you've confirmed a new slice is actually warranted, this repo's actual workflow, repeated per
 section:
 
