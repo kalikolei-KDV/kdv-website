@@ -1,0 +1,34 @@
+{
+  "id": "two_column_copy",
+  "type": "SharedSlice",
+  "name": "TwoColumnCopy",
+  "description": "TwoColumnCopy",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "Default",
+      "primary": {},
+      "items": {
+        "label": {
+          "type": "Text",
+          "config": {
+            "label": "Label",
+            "placeholder": "Challenge"
+          }
+        },
+        "content": {
+          "type": "StructuredText",
+          "config": {
+            "single": "paragraph",
+            "label": "Content",
+            "placeholder": "Rich text"
+          }
+        }
+      },
+      "imageUrl": ""
+    }
+  ]
+}

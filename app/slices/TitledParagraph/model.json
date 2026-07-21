@@ -1,0 +1,34 @@
+{
+  "id": "titled_paragraph",
+  "type": "SharedSlice",
+  "name": "TitledParagraph",
+  "description": "TitledParagraph",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "Default",
+      "primary": {
+        "label": {
+          "type": "Text",
+          "config": {
+            "label": "Label",
+            "placeholder": "Story"
+          }
+        },
+        "content": {
+          "type": "StructuredText",
+          "config": {
+            "single": "paragraph",
+            "label": "Content",
+            "placeholder": "Rich text"
+          }
+        }
+      },
+      "items": {},
+      "imageUrl": ""
+    }
+  ]
+}

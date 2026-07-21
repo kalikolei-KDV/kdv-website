@@ -1,0 +1,70 @@
+{
+  "id": "three_cards",
+  "type": "SharedSlice",
+  "name": "ThreeCards",
+  "description": "ThreeCards",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "Default",
+      "primary": {
+        "label": {
+          "type": "Text",
+          "config": {
+            "label": "Label (optional)",
+            "placeholder": "Relevant cases"
+          }
+        },
+        "content": {
+          "type": "StructuredText",
+          "config": {
+            "single": "paragraph",
+            "label": "Content (optional)",
+            "placeholder": "Paragraph or two of intro copy shown above the cards"
+          }
+        }
+      },
+      "items": {
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "Title",
+            "placeholder": "Title 1"
+          }
+        },
+        "paragraph": {
+          "type": "Text",
+          "config": {
+            "label": "Paragraph",
+            "placeholder": "Paragraph 1"
+          }
+        },
+        "link_label": {
+          "type": "Text",
+          "config": {
+            "label": "Link label",
+            "placeholder": "See Project"
+          }
+        },
+        "link": {
+          "type": "Link",
+          "config": {
+            "label": "Link"
+          }
+        }
+      },
+      "imageUrl": ""
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "id": "case_study_meta",
+  "type": "SharedSlice",
+  "name": "CaseStudyMeta",
+  "description": "CaseStudyMeta",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "Default",
+      "primary": {},
+      "items": {
+        "label": {
+          "type": "Text",
+          "config": {
+            "label": "Label",
+            "placeholder": "Client"
+          }
+        },
+        "value": {
+          "type": "Text",
+          "config": {
+            "label": "Value",
+            "placeholder": "Evolus"
+          }
+        }
+      },
+      "imageUrl": ""
+    }
+  ]
+}
