@@ -95,9 +95,7 @@ const Footer: FC<FooterProps> = ({ slice }) => {
                       {slice.primary.phone_label}
                     </p>
                   )}
-                  <p className="w-full leading-[1.5]">
-                    {slice.primary.email}
-                  </p>
+                  <p className="w-full leading-[1.5]">{slice.primary.email}</p>
                 </div>
               </div>
             </div>

@@ -35,6 +35,9 @@ export function PrismicLink(props: PrismicLinkProps<RouterLinkAdapterProps>) {
   >;
 
   return (
-    <BasePrismicLink {...forwardedProps} internalComponent={RouterLinkAdapter} />
+    <BasePrismicLink
+      {...forwardedProps}
+      internalComponent={RouterLinkAdapter}
+    />
   );
 }

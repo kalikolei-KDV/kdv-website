@@ -52,7 +52,10 @@ const OurServices: FC<OurServicesProps> = ({ slice }) => {
                 </p>
                 <ul className="flex w-full flex-col items-start gap-[5px]">
                   {group.items.map((item, itemIndex) => (
-                    <li key={itemIndex} className="flex w-full items-center py-[5px]">
+                    <li
+                      key={itemIndex}
+                      className="flex w-full items-center py-[5px]"
+                    >
                       <p className="font-body flex-1 text-[20px] leading-[1.21] font-normal not-italic tracking-[-1px] text-[color:var(--paragraph-primary,#422307)]">
                         {item.label}
                       </p>

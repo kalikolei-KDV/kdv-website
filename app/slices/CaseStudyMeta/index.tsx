@@ -2,7 +2,8 @@ import type { FC } from "react";
 import type { Content } from "@prismicio/client";
 import type { SliceComponentProps } from "@prismicio/react";
 
-export type CaseStudyMetaProps = SliceComponentProps<Content.CaseStudyMetaSlice>;
+export type CaseStudyMetaProps =
+  SliceComponentProps<Content.CaseStudyMetaSlice>;
 
 /**
  * Component for "CaseStudyMeta" Slices.
