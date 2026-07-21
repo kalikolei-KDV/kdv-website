@@ -217,6 +217,13 @@ on failure (see above), so an unconfigured build just prerenders zero `page`/`ca
 instead of failing. Add repo secrets with the same names as `.env.local.example` for a CI build
 that actually reflects real content.
 
+`.github/dependabot.yml` runs weekly, opening PRs for outdated dependencies — production deps
+(`react-router`, `@prismicio/*`, etc.) each get their own PR since those are the ones worth
+reviewing individually (this repo has already been bitten twice by Node/`react-router` version
+mismatches, see the gotcha above); dev-dependency bumps are grouped into a single PR to cut down on
+noise. `ci.yml` runs against every Dependabot PR the same as any other, so a bad bump still gets
+caught before merge.
+
 ## TypeScript gotchas specific to this stack
 
 - `tsconfig.json` has `verbatimModuleSyntax: true` — type-only imports (`FC`, `Content`,
