@@ -98,7 +98,25 @@ done. A genuinely-unregistered path still 404s normally — only _registered_ ro
 
 ## Adding a slice from Figma
 
-This repo's actual workflow, repeated per section:
+Before building a new slice, check whether an existing one already covers the section — creating a
+near-duplicate slice is a recurring mistake worth actively avoiding:
+
+- **Reuse as-is** when the shape genuinely matches. `three_cards` is registered as a slice choice
+  on both `home` and `case_study`; the case-study template's "Relevant cases" section reuses it
+  verbatim rather than getting its own slice (a version of this repo's own `three_cards` was
+  initially miscategorized as needing something new for exactly this section — don't repeat that).
+- **Add an optional field** when the difference is content presence/absence, not structure.
+  `ThreeCards`' optional `label`/`content` primary fields render a `TitledParagraph`-style header
+  above the grid when filled, instead of a separate header slice existing just for that case.
+- **Add a genuine Prismic variation** — multiple named variations under one `SharedSlice` id,
+  picked from a dropdown in the slice picker — when the difference is structural enough that
+  another optional field would feel like a hack, but the content is still conceptually the same
+  slice. No slice in this repo uses that mechanism yet (every `model.json` has exactly one
+  `"default"` variation), but it's the right tool once field-based composition stops fitting.
+- Only reach for a **genuinely new slice** when none of the above holds.
+
+Once you've confirmed a new slice is actually warranted, this repo's actual workflow, repeated per
+section:
 
 1. Pull `get_design_context` (Figma MCP) for the relevant node(s) — usually one per breakpoint
    that has structural differences, not just size differences. Don't assume; check.
