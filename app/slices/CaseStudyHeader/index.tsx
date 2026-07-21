@@ -38,8 +38,13 @@ const CaseStudyHeader: FC<CaseStudyHeaderProps> = ({ slice }) => {
         </h1>
       </header>
 
-      {/* Mobile: image above, title below (no overlay) */}
-      <div className="relative h-[211px] w-full overflow-hidden md:hidden">
+      {/* Mobile: title above the image (no overlay text) */}
+      <div className="px-[15px] py-[15px] md:hidden">
+        <h1 className="font-heading text-[32px] leading-none font-medium text-[color:var(--paragraph-primary,#422307)]">
+          {slice.primary.title}
+        </h1>
+      </div>
+      <div className="relative aspect-[1600/900] w-full overflow-hidden md:hidden">
         {hasImage && (
           <PrismicImage
             field={slice.primary.background_image}
@@ -47,11 +52,6 @@ const CaseStudyHeader: FC<CaseStudyHeaderProps> = ({ slice }) => {
           />
         )}
         <div aria-hidden className="absolute inset-0 bg-black/10" />
-      </div>
-      <div className="px-[15px] py-[15px] md:hidden">
-        <h1 className="font-heading text-[32px] leading-none font-medium text-[color:var(--paragraph-primary,#422307)]">
-          {slice.primary.title}
-        </h1>
       </div>
     </section>
   );
