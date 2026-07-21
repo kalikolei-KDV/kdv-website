@@ -37,9 +37,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           document to see it rendered here.
         </p>
         <p className="max-w-md text-sm text-neutral-500">
-          Update <code>PRISMIC_ENVIRONMENT</code> in <code>.env.local</code>{" "}
-          and <code>repositoryName</code> in{" "}
-          <code>slicemachine.config.json</code> with your repo name.
+          Update <code>PRISMIC_ENVIRONMENT</code> in <code>.env.local</code> and{" "}
+          <code>repositoryName</code> in <code>slicemachine.config.json</code>{" "}
+          with your repo name.
         </p>
       </main>
     );

@@ -52,7 +52,5 @@ export const meta: MetaFunction = (args) => {
 export default function CaseStudy({ loaderData }: { loaderData: LoaderData }) {
   const { caseStudy } = loaderData;
 
-  return (
-    <SliceZone slices={caseStudy.data.slices} components={components} />
-  );
+  return <SliceZone slices={caseStudy.data.slices} components={components} />;
 }

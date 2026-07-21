@@ -3,7 +3,8 @@ import type { Content } from "@prismicio/client";
 import { PrismicRichText } from "@prismicio/react";
 import type { SliceComponentProps } from "@prismicio/react";
 
-export type TwoColumnCopyProps = SliceComponentProps<Content.TwoColumnCopySlice>;
+export type TwoColumnCopyProps =
+  SliceComponentProps<Content.TwoColumnCopySlice>;
 
 /**
  * Component for "TwoColumnCopy" Slices.

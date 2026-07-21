@@ -4,7 +4,10 @@ import type { ImageField } from "@prismicio/client";
 
 type PrismicImageProps = {
   field: ImageField<never> | null | undefined;
-} & Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "alt" | "width" | "height">;
+} & Omit<
+  ImgHTMLAttributes<HTMLImageElement>,
+  "src" | "alt" | "width" | "height"
+>;
 
 /**
  * Renders a Prismic image field as a plain `<img>`, pulling `src`/`alt`/
