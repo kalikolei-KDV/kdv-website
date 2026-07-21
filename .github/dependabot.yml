@@ -7,6 +7,13 @@ updates:
     groups:
       dev-dependencies:
         dependency-type: "development"
+    ignore:
+      # @react-router/dev@8.2.0's peerOptional typescript range caps at
+      # ^5.1.0 || ^6.0.0 — a proposed typescript 7.x bump fails npm ci with
+      # ERESOLVE until react-router's own tooling supports it. Revisit once
+      # react-router bumps that peer range.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
