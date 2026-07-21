@@ -65,7 +65,8 @@ There's no local Slice Machine UI for this stack (no React Router adapter exists
 
 ```bash
 npm run push-models -- --dry-run   # preview what would be pushed, no network call
-npm run push-models                # actually push (inserts new models, updates existing ones)
+npm run push-models                # prints an insert/update plan, then asks you to type "yes"
+npm run push-models -- --yes       # skip the confirmation prompt (non-interactive use)
 ```
 
 Reads every `customtypes/*/index.json` and `app/slices/*/model.json` and syncs it to your repo
