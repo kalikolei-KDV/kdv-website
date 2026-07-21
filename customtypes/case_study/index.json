@@ -24,6 +24,9 @@
             "case_study_gallery": {
               "type": "SharedSlice"
             },
+            "three_cards": {
+              "type": "SharedSlice"
+            },
             "titled_paragraph": {
               "type": "SharedSlice"
             },
