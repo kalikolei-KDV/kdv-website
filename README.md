@@ -103,6 +103,12 @@ then restart `dev` (route registration happens once at startup — see Content a
 (Vercel, Netlify, Cloudflare Pages, S3+CloudFront, GitHub Pages, etc.). There's no server to run.
 Every Prismic publish requires a rebuild + redeploy to show up (trigger that via a webhook to your
 host's deploy hook, or CI on a schedule) — there's no live preview or ISR in this architecture.
+`npm run build` also regenerates `public/sitemap.xml` from live Prismic content before building;
+`public/robots.txt` is a static file pointing at it.
+
+`.github/workflows/ci.yml` runs format/lint/typecheck/test/build on every push to `main` and every
+PR; `.github/dependabot.yml` opens weekly PRs for outdated dependencies. See AGENTS.md's
+Continuous Integration section for details.
 
 ## Node version
 
@@ -116,5 +122,6 @@ warn, it corrupts `node_modules` — see AGENTS.md before troubleshooting instal
   change, don't hand-edit it.
 - Fonts (Instrument Sans, IBM Plex Mono) are self-hosted via `@fontsource/*`, imported in
   `app/app.css` — no external font requests at runtime.
+- `npm run format` / `npm run format:check` — Prettier, config in `.prettierrc.json`.
 - See `AGENTS.md` for the deeper conventions/gotchas list (styling patterns, TypeScript quirks
   specific to this stack, process hygiene when spinning up temp dev servers).
