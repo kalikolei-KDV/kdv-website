@@ -48,7 +48,7 @@ type ContentRelationshipFieldWithData<
 		>
 }[Exclude<TCustomType[number], string>["id"]];
 
-type CaseStudyDocumentDataSlicesSlice = CaseStudyHeaderSlice | CaseStudyMetaSlice | TwoColumnCopySlice | CaseStudyGallerySlice | TitledParagraphSlice | CaseStudyResultsSlice | CaseStudyFeedbackSlice
+type CaseStudyDocumentDataSlicesSlice = CaseStudyHeaderSlice | CaseStudyMetaSlice | TwoColumnCopySlice | CaseStudyGallerySlice | ThreeCardsSlice | TitledParagraphSlice | CaseStudyResultsSlice | CaseStudyFeedbackSlice
 
 /**
  * Content for Case Study documents
