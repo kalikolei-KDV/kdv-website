@@ -60,9 +60,9 @@ const CaseStudiesList: FC<CaseStudiesListProps> = ({ slice, context }) => {
             to={`/case-studies/${caseStudy.uid}`}
             className="relative aspect-[640/551] w-full overflow-hidden md:aspect-[1600/900] md:flex-1"
           >
-            {isFilled.image(caseStudy.data.meta_image) && (
+            {isFilled.image(caseStudy.data.listing_image) && (
               <PrismicImage
-                field={caseStudy.data.meta_image}
+                field={caseStudy.data.listing_image}
                 className="absolute inset-0 h-full w-full object-cover"
               />
             )}

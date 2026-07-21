@@ -77,6 +77,17 @@ interface CaseStudyDocumentData {
 	title: prismic.KeyTextField;
 	
 	/**
+	 * Listing image field in *Case Study*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: case_study.listing_image
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	listing_image: prismic.ImageField<never>;
+	
+	/**
 	 * Slice Zone field in *Case Study*
 	 *
 	 * - **Field Type**: Slice Zone

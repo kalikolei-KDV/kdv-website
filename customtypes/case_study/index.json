@@ -23,6 +23,14 @@
           "placeholder": "Short display title — shown on the /work listing card. Separate from the case_study_header slice's own title so the listing page doesn't need to read into slice data."
         }
       },
+      "listing_image": {
+        "type": "Image",
+        "config": {
+          "label": "Listing image",
+          "constraint": {},
+          "thumbnails": []
+        }
+      },
       "slices": {
         "config": {
           "choices": {

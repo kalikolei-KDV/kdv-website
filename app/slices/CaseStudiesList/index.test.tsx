@@ -8,7 +8,7 @@ import CaseStudiesList from "./index";
 // Constructing a full PrismicDocument literal for every field this type
 // carries (url, lang, tags, first_publication_date, ...) would be pure
 // noise here — the component only reads id/uid/data.client/data.title/
-// data.meta_image, so build just that and cast at the boundary, matching
+// data.listing_image, so build just that and cast at the boundary, matching
 // this codebase's convention for Prismic typing friction elsewhere.
 function buildCaseStudy(overrides: {
   uid: string;
@@ -21,7 +21,7 @@ function buildCaseStudy(overrides: {
     data: {
       client: overrides.client ?? "",
       title: overrides.title ?? "",
-      meta_image: {},
+      listing_image: {},
     },
   } as unknown as Content.CaseStudyDocument;
 }
