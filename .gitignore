@@ -13,6 +13,11 @@
 # production
 /build
 
+# generated at build time (scripts/generate-sitemap.mjs), regenerated fresh
+# on every build — not worth committing since it changes with CMS content,
+# not code
+/public/sitemap.xml
+
 # misc
 .DS_Store
 *.pem
