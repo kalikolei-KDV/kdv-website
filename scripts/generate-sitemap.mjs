@@ -41,6 +41,7 @@ async function main() {
 
   const entries = [
     urlEntry("/"),
+    urlEntry("/work"),
     ...pages.map((page) => urlEntry(`/${page.uid}`)),
     ...caseStudies.map((caseStudy) =>
       urlEntry(`/case-studies/${caseStudy.uid}`),
